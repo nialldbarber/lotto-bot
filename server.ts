@@ -7,22 +7,19 @@ const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
 
-client.once('ready', () => {
-  console.log(`Online as ${client.user.tag}`);
+let interval;
+client.on('message', async (msg: any) => {
+  const lotto = await doesJackpotExceedLimits(
+    'https://www.national-lottery.co.uk/games/euromillions',
+  );
 
-  let scheduledMessage = new cron.CronJob('00 30 20 * * *', async () => {
-    const lotto = await doesJackpotExceedLimits(
-      'https://www.national-lottery.co.uk/games/euromillions',
-    );
-    const guild = client.guilds.cache.get('id');
-    const channel = guild.channels.cache.get('id');
+  interval = setInterval(function () {
     if (lotto) {
-      channel.send('Euromillions is over £100 mill!');
+      msg.channel.send('Euromillions is over £100 mill!');
     } else {
-      channel.send("Euromillions is shit, don't bother");
+      msg.channel.send("Euromillions is shit, don't bother");
     }
-  });
-  scheduledMessage.start();
+  }, 10000); //every hour
 });
 
 client.login(process.env.CLIENT_TOKEN);
