@@ -10,7 +10,7 @@ const client = new Client({
 client.once('ready', () => {
   console.log(`Online as ${client.user.tag}`);
 
-  let scheduledMessage = new cron.CronJob('01 05 01,13 * * *', async () => {
+  let scheduledMessage = new cron.CronJob('00 30 20 * * *', async () => {
     const lotto = await doesJackpotExceedLimits(
       'https://www.national-lottery.co.uk/games/euromillions',
     );
