@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 import puppeteer from 'puppeteer';
 import cheerio from 'cheerio';
 
@@ -32,10 +34,10 @@ type DoesExceedT = {
 export async function doesJackpotExceedLimits(): Promise<DoesExceedT | void> {
   try {
     const data = await fetchData();
-    if (data && data.amount >= 100) {
+    if (data && data?.amount >= 100) {
       return {
         doesExceed: true,
-        amount: data.amount,
+        amount: data?.amount,
       };
     }
     return {

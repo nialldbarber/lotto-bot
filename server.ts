@@ -11,7 +11,7 @@ const client: TDiscord.Client = new Client({
 
 let interval: NodeJS.Timer;
 
-client.on('message', async (msg: TDiscord.Message) => {
+client.on('messageCreate', async (msg: TDiscord.Message) => {
   const lotto = await doesJackpotExceedLimits();
 
   switch (msg.content) {
@@ -21,15 +21,11 @@ client.on('message', async (msg: TDiscord.Message) => {
         if (lotto?.doesExceed) {
           msg.channel
             .send(
-              `🤑 Euromillions jackpot is ${lotto?.amount}!, [buy a ticket here](${process.env.BUY})`,
+              `🤑 Euromillions jackpot is ${lotto?.amount}!, buy a ticket: (${process.env.BUY})`,
             )
             .catch(console.error);
-        } else {
-          msg.channel
-            .send(`🤑 NOPE! [buy a ticket here](${process.env.BUY})`)
-            .catch(console.error);
         }
-      }, 900000);
+      }, 3600000);
       break;
     case '!stop':
       msg.channel.send('No worries, no more lotto reminders.');
