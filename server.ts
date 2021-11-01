@@ -17,11 +17,11 @@ client.on('message', async (msg: TDiscord.Message) => {
   switch (msg.content) {
     case '!lotto':
       msg.channel.send('You are now subscribed to lotto reminders.');
-      interval = setInterval(() => {
-        if (lotto) {
+      interval = setInterval(function (): void {
+        if (lotto?.doesExceed) {
           msg.channel
             .send(
-              `🤑 Euromillions jackpot is over £100 million!, [buy a ticket here](${process.env.BUY})`,
+              `🤑 Euromillions jackpot is ${lotto?.amount}!, [buy a ticket here](${process.env.BUY})`,
             )
             .catch(console.error);
         } else {

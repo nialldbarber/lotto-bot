@@ -24,13 +24,23 @@ async function fetchData(): Promise<{amount: number} | void> {
   }
 }
 
-export async function doesJackpotExceedLimits(): Promise<boolean | void> {
+type DoesExceedT = {
+  doesExceed: boolean;
+  amount?: number;
+};
+
+export async function doesJackpotExceedLimits(): Promise<DoesExceedT | void> {
   try {
     const data = await fetchData();
     if (data && data.amount >= 100) {
-      return true;
+      return {
+        doesExceed: true,
+        amount: data.amount,
+      };
     }
-    return false;
+    return {
+      doesExceed: false,
+    };
   } catch (err) {
     console.log(err);
   }
