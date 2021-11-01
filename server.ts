@@ -3,13 +3,15 @@ require('dotenv').config();
 import {Client, Intents} from 'discord.js';
 import {doesJackpotExceedLimits} from './scraper';
 
-const client = new Client({
+import type * as TDiscord from 'discord.js';
+
+const client: TDiscord.Client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
 
-let interval: any;
+let interval: NodeJS.Timer;
 
-client.on('message', async (msg: any) => {
+client.on('message', async (msg: TDiscord.Message) => {
   const lotto = await doesJackpotExceedLimits();
 
   switch (msg.content) {
@@ -18,10 +20,14 @@ client.on('message', async (msg: any) => {
       interval = setInterval(() => {
         if (lotto) {
           msg.channel
-            .send('🤑 Euromillions jackpot is over £100 million!')
+            .send(
+              `🤑 Euromillions jackpot is over £100 million!, [buy a ticket here](${process.env.BUY})`,
+            )
             .catch(console.error);
         } else {
-          msg.channel.send('🤑 NOPE!').catch(console.error);
+          msg.channel
+            .send(`🤑 NOPE! [buy a ticket here](${process.env.BUY})`)
+            .catch(console.error);
         }
       }, 900000);
       break;
