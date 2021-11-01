@@ -1,13 +1,13 @@
-const puppeteer = require('puppeteer');
-const cheerio = require('cheerio');
+import puppeteer from 'puppeteer';
+import cheerio from 'cheerio';
 
-async function fetchData(URL: string): Promise<{amount: number} | void> {
+async function fetchData(): Promise<{amount: number} | void> {
   let eurosAmount = '';
 
   try {
     const browser = await puppeteer.launch({headless: true});
     const page = await browser.newPage();
-    await page.goto(URL);
+    await page.goto(process.env.URL || '');
     const html = await page.content();
 
     const $ = cheerio.load(html);
@@ -24,9 +24,9 @@ async function fetchData(URL: string): Promise<{amount: number} | void> {
   }
 }
 
-export async function doesJackpotExceedLimits(URL: string) {
+export async function doesJackpotExceedLimits(): Promise<boolean | void> {
   try {
-    const data = await fetchData(URL);
+    const data = await fetchData();
     if (data && data.amount >= 100) {
       return true;
     }

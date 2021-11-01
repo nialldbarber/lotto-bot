@@ -10,20 +10,20 @@ const client = new Client({
 let interval: any;
 
 client.on('message', async (msg: any) => {
-  const lotto = await doesJackpotExceedLimits(
-    'https://www.national-lottery.co.uk/games/euromillions',
-  );
+  const lotto = await doesJackpotExceedLimits();
 
   switch (msg.content) {
     case '!lotto':
       msg.channel.send('You are now subscribed to lotto reminders.');
-      interval = setInterval(function () {
+      interval = setInterval(() => {
         if (lotto) {
           msg.channel
             .send('🤑 Euromillions jackpot is over £100 million!')
             .catch(console.error);
+        } else {
+          msg.channel.send('🤑 NOPE!').catch(console.error);
         }
-      }, 3600000);
+      }, 900000);
       break;
     case '!stop':
       msg.channel.send('No worries, no more lotto reminders.');
