@@ -1,7 +1,7 @@
 require('dotenv').config();
-const {Client, Intents} = require('discord.js');
-const cron = require('cron');
-const {doesJackpotExceedLimits} = require('./scraper');
+
+import {Client, Intents} from 'discord.js';
+import {doesJackpotExceedLimits} from './scraper';
 
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
@@ -20,17 +20,13 @@ client.on('message', async (msg: any) => {
       interval = setInterval(function () {
         if (lotto) {
           msg.channel
-            .send('Please take an eye break now!')
-            .catch(console.error);
-        } else {
-          msg.channel
-            .send('Please take an eye break now!')
+            .send('🤑 Euromillions jackpot is over £100 million!')
             .catch(console.error);
         }
-      }, 3600000); //every hour
+      }, 3600000);
       break;
     case '!stop':
-      msg.channel.send('I have stopped lotto reminders.');
+      msg.channel.send('No worries, no more lotto reminders.');
       clearInterval(interval);
       break;
   }
