@@ -22,7 +22,7 @@ async function fetchData(): Promise<{amount: number} | void> {
 
     return {amount: parseInt(eurosAmount)};
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
@@ -44,6 +44,6 @@ export async function doesJackpotExceedLimits(): Promise<DoesExceedT | void> {
       doesExceed: false,
     };
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
