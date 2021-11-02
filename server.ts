@@ -17,7 +17,7 @@ client.on('messageCreate', async (msg: TDiscord.Message) => {
   switch (msg.content) {
     case '!lotto':
       msg.channel.send('You are now subscribed to lotto reminders.');
-      interval = setInterval(function (): void {
+      interval = setInterval((): void => {
         if (lotto?.doesExceed) {
           msg.channel
             .send(
